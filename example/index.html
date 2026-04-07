@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>electron-osx-spaces test</title>
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; padding: 24px; background: #1e1e1e; color: #e0e0e0; }
+    h1 { font-size: 20px; margin-bottom: 16px; }
+    .section { margin-bottom: 20px; padding: 16px; background: #2d2d2d; border-radius: 8px; }
+    .label { font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 4px; }
+    .value { font-family: 'SF Mono', Menlo, monospace; font-size: 14px; word-break: break-all; }
+    button { padding: 8px 16px; background: #0078d4; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 8px; font-size: 14px; }
+    button:hover { background: #106ebe; }
+    .instructions { font-size: 13px; color: #aaa; line-height: 1.6; }
+    .instructions ol { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>electron-osx-spaces</h1>
+
+  <div class="section instructions">
+    <div class="label">How to Test</div>
+    <ol>
+      <li>Move this window to a different Space (virtual desktop)</li>
+      <li>Click "Save State"</li>
+      <li>Quit the app (Cmd+Q)</li>
+      <li>Relaunch and verify the window restores to the same Space</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <div class="label">Actions</div>
+    <button type="button" id="btn-save">Save State</button>
+    <button type="button" id="btn-encode">Encode (preview)</button>
+  </div>
+
+  <div class="section">
+    <div class="label">Current Window Bounds</div>
+    <div class="value" id="bounds">-</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Space Data Size (bytes)</div>
+    <div class="value" id="space-size">-</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Space Data (hex preview)</div>
+    <div class="value" id="space-hex">-</div>
+  </div>
+
+  <div class="section">
+    <div class="label">State File Path</div>
+    <div class="value" id="state-path">-</div>
+  </div>
+
+  <div class="section">
+    <div class="label">Log</div>
+    <div class="value" id="log" style="white-space: pre-wrap; max-height: 200px; overflow-y: auto;">-</div>
+  </div>
+
+  <script>
+    const logEl = document.getElementById('log');
+    function log(msg) {
+      const ts = new Date().toLocaleTimeString();
+      logEl.textContent = `[${ts}] ${msg}\n${logEl.textContent}`;
+    }
+
+    window.spacesAPI.getStatePath().then(p => {
+      document.getElementById('state-path').textContent = p;
+    });
+
+    window.spacesAPI.onStatusUpdate(data => {
+      const b = data.bounds;
+      document.getElementById('bounds').textContent =
+        `x=${b.x} y=${b.y} w=${b.width} h=${b.height}`;
+      document.getElementById('space-size').textContent =
+        data.spaceDataSize || '0';
+      document.getElementById('space-hex').textContent =
+        data.spaceDataPreview || '(none)';
+    });
+
+    document.getElementById('btn-save').addEventListener('click', async () => {
+      await window.spacesAPI.saveState();
+      log('State saved!');
+    });
+
+    document.getElementById('btn-encode').addEventListener('click', async () => {
+      const result = await window.spacesAPI.encodeState();
+      if (result) {
+        log(`Encoded: ${result.size} bytes, hex: ${result.hex.substring(0, 40)}...`);
+      } else {
+        log('Encode returned null');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "name": "electron-osx-spaces",
+  "version": "0.1.0",
+  "description": "Save and restore Electron window Spaces (virtual desktop) positions on macOS",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "src/spaces.mm",
+    "binding.gyp"
+  ],
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "build": "node-gyp rebuild",
+    "clean": "node-gyp clean",
+    "example": "env -u ELECTRON_RUN_AS_NODE npx electron example/main.js",
+    "test": "env -u ELECTRON_RUN_AS_NODE npx electron test/smoke.js",
+    "lint": "npx @biomejs/biome check .",
+    "lint:fix": "npx @biomejs/biome check --write .",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "electron",
+    "macos",
+    "spaces",
+    "virtual-desktop",
+    "window-state",
+    "restore"
+  ],
+  "author": "",
+  "license": "MIT",
+  "os": [
+    "darwin"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "node-addon-api": "^8.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@electron/rebuild": "^4.0.3",
+    "electron": "^40.8.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "node-gyp": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{js,json}": "npx @biomejs/biome check --write --no-errors-on-unmatched"
+  }
+}
