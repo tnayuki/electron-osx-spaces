@@ -28,8 +28,19 @@
     "window-state",
     "restore"
   ],
-  "author": "",
+  "author": "Toru Nayuki",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tnayuki/electron-osx-spaces.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tnayuki/electron-osx-spaces/issues"
+  },
+  "homepage": "https://github.com/tnayuki/electron-osx-spaces#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "os": [
     "darwin"
   ],
