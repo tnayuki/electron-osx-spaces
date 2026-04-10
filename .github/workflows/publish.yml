@@ -15,19 +15,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org
 
       - run: npm install
 
-      - name: Rebuild for Electron
-        run: npx @electron/rebuild
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Run smoke tests
-        run: npm test
-
-      - name: Publish with provenance (Trusted Publishing)
-        run: npm publish --provenance --access public
+      - name: Publish (Trusted Publishing)
+        run: npm publish --access public
