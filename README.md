@@ -67,6 +67,10 @@ An `NSKeyedArchiverDelegate` is used to skip objects that don't support `NSSecur
 
 On macOS 15+, a workaround for broken `NSWindowRestoresWorkspaceAtLaunch` is applied via a private API override. This makes the package **incompatible with Mac App Store** distribution.
 
+## See also
+
+If your app can delegate window creation to macOS's native restoration cycle, see [electron-osx-restorable-state](https://github.com/tnayuki/electron-osx-restorable-state) — it uses the official `NSWindowRestoration` API and is Mac App Store compatible.
+
 ## Platform support
 
 - **macOS**: Full functionality
